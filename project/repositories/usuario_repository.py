@@ -38,13 +38,16 @@ class UsuarioRepository:
             print(f"Erro ao excluir usuário: {erro}")
             raise erro
 
-    def atualizar_usuario(self, usuario: Usuario, novos_dados: dict):
+    def atualizar_usuario(self, usuario, novos_dados):
+        if not isinstance(novos_dados, dict):
+            raise TypeError("novos_dados deve ser um dicionário")
+        if not hasattr(usuario, '__dict__'):
+            raise TypeError("usuario deve ser um objeto com atributos modificáveis")
+    
         try:
             for key, value in novos_dados.items():
-                if hasattr(usuario, key):
-                    setattr(usuario, key, value)
-            self.session.commit()
-        except Exception as erro:
-            self.session.rollback()
-            print(f"Erro ao atualizar usuário: {erro}")
-            raise erro
+                setattr(usuario, key, value)
+            return usuario  
+        except AttributeError as erro:
+            raise AttributeError(f"Erro ao atualizar o atributo '{key}' do usuário: {erro}")
+

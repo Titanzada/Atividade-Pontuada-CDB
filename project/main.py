@@ -46,8 +46,8 @@ def main():
                 if usuario:
                     print(f"Dados atuais: Nome={usuario.nome}, Email={usuario.email}")
                     novo_nome = input("Informe o novo nome (ou pressione Enter para manter o atual): ").strip() or usuario.nome
-                    nova_senha = input("Informe a nova senha (ou pressione Enter para manter a atual): ").strip() or usuario.senha
-                    repository.atualizar_usuario(usuario, novo_nome, nova_senha)
+                    novos_dados = {"nome": novo_nome}  # Transforme em um dicionário
+                    repository.atualizar_usuario(usuario, novos_dados)  # Apenas esta chamada
                     print("Usuário atualizado com sucesso!")
                 else:
                     print("Usuário não encontrado.")
